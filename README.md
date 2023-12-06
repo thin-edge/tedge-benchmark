@@ -41,7 +41,7 @@ The following packages are required to use the plugin:
 
 ### Check the timer status
 
-You can check on the status of the timer by running:
+You can check when the next time the benchmark will run by using the following systemd command:
 
 ```sh
 systemctl status tedge-benchmark.timer
@@ -51,18 +51,32 @@ systemctl status tedge-benchmark.timer
 
 ```sh
 ● tedge-benchmark.timer - thin-edge.io benchmark runner
-     Loaded: loaded (/etc/systemd/system/tedge-benchmark.timer; enabled; preset: enabled)
-     Active: active (waiting) since Wed 2023-12-06 21:54:28 CET; 48s ago
-    Trigger: Wed 2023-12-06 22:00:00 CET; 4min 42s left
+     Loaded: loaded (/lib/systemd/system/tedge-benchmark.timer; enabled; preset: enabled)
+     Active: active (waiting) since Wed 2023-12-06 22:33:01 CET; 55min ago
+    Trigger: Thu 2023-12-07 00:00:00 CET; 31min left
    Triggers: ● tedge-benchmark.service
 
-Dec 06 21:54:28 rackfslot1 systemd[1]: Started tedge-benchmark.timer - thin-edge.io benchmark runner.
+Dec 06 22:33:01 rackfslot1 systemd[1]: Started tedge-benchmark.timer - thin-edge.io benchmark runner.
 ```
 
-### Check log output
+### Triggering the benchmark on demand
+
+You can manually trigger the benchmark to run on demand using the following command:
+
+```sh
+systemctl start tedge-benchmark.service
+```
+
+Otherwise, you can also trigger the benchmark on the commands line.
+
+```sh
+tedge-benchmark.py run --count 1000 --beats 100 --period 500
+```
+
+### Check benchmark output
 
 Check the results of the benchmark using:
 
 ```sh
-tail -f /var/log/tedge-benchmark.log
+tail -f /var/log/tedge-benchmark/tedge-benchmark.log
 ```
