@@ -4,9 +4,10 @@ After=network.target
 
 [Service]
 Type=simple
-WorkingDirectory=/var/log
+WorkingDirectory=/var/log/tedge-benchmark
+ExecStartPre=mkdir -p /var/log/tedge-benchmark
 ExecStart=/usr/bin/tedge-benchmark.py run --count 1000 --beats 100 --period 500 --out-metric "tedge-benchmark.prom"
-StandardOutput=append:/var/log/tedge-benchmark.log
+StandardOutput=append:/var/log/tedge-benchmark/tedge-benchmark.log
 
 [Install]
 WantedBy=multi-user.target
