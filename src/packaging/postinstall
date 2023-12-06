@@ -23,6 +23,9 @@ cleanInstall() {
 
 upgrade() {
     printf "\033[32m Post Install of an upgrade\033[0m\n"
+	if [ "$use_systemctl" = "True" ]; then
+		systemctl daemon-reload
+	fi
 }
 
 # Step 2, check if this is a clean install or an upgrade

@@ -21,6 +21,7 @@ do_systemd() {
     if [ -d /run/systemd/system ]; then
         systemctl stop tedge-benchmark.timer ||:
     fi
+    systemctl daemon-reload
 }
 
 action="$1"
