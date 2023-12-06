@@ -292,7 +292,7 @@ class Pub:
         dropped_messages = self.count - total_cloud_messages
 
         return {
-            "test_start": start_time.isoformat(),
+            "test_start": self.start_time.isoformat(),
             "test_end": end_time.isoformat(),
             "worker": procID,
             "messages": self.count,
