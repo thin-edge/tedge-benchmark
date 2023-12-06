@@ -1,0 +1,12 @@
+[Unit]
+Description=thin-edge.io benchmark runner
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/var/log
+ExecStart=/usr/bin/tedge-benchmark.py run --count 1000 --beats 100 --period 500 --out-metric "tedge-benchmark.prom"
+StandardOutput=append:/var/log/tedge-benchmark.log
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,10 @@
+[Unit]
+Description=thin-edge.io benchmark runner
+
+[Timer]
+#OnBootSec=60s
+#OnUnitActiveSec=1h
+OnCalendar=hourly
+
+[Install]
+WantedBy=timers.target

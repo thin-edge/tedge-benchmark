@@ -1,0 +1,54 @@
+# yaml-language-server: $schema=https://nfpm.goreleaser.com/static/schema.json
+---
+name: tedge-benchmark
+arch: all
+platform: linux
+version: ${SEMVER}
+section: misc
+priority: optional
+maintainer: Community <community@thin-edge.io>
+description: thin-edge.io benchmark script
+vendor: thin-edge.io
+homepage: https://github.com/thin-edge/tedge-benchmark
+license: Apache License 2.0
+disable_globbing: false
+depends:
+  - tedge
+  - python3-paho-mqtt
+apk:
+  # Use noarch instead of "all"
+  arch: noarch
+contents:
+  - src: ./src/tedge-benchmark.py
+    dst: /usr/bin/
+    file_info:
+      mode: 0755
+
+  # service definitions
+  - src: ./src/services/systemd/*
+    dst: /lib/systemd/system/
+    file_info:
+      mode: 0644
+    packager: deb
+
+  - src: ./src/services/systemd/*
+    dst: /lib/systemd/system/
+    file_info:
+      mode: 0644
+    packager: rpm
+
+overrides:
+  apk:
+    scripts:
+      postinstall: src/packaging/postinstall
+      postremove: src/packaging/postremove
+
+  rpm:
+    scripts:
+      postinstall: src/packaging/postinstall
+      postremove: src/packaging/postremove
+
+  deb:
+    scripts:
+      postinstall: src/packaging/postinstall
+      postremove: src/packaging/postremove
