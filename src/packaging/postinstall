@@ -19,6 +19,8 @@ cleanInstall() {
         printf "\033[32m Set the enabled flag for the service unit\033[0m\n"
         systemctl enable tedge-benchmark.timer ||:
 		systemctl start tedge-benchmark.timer ||:
+
+		mkdir -p /var/log/tedge-benchmark
     fi
 }
 
@@ -27,6 +29,7 @@ upgrade() {
 	if [ "$use_systemctl" = "True" ]; then
 		systemctl daemon-reload
 	fi
+	mkdir -p /var/log/tedge-benchmark
 }
 
 # Step 2, check if this is a clean install or an upgrade

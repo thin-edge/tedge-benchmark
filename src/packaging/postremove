@@ -10,6 +10,7 @@ remove() {
 
 purge() {
     printf "\033[32m Post Remove purge, deb only\033[0m\n"
+    rm -rf /var/log/tedge-benchmark
 }
 
 upgrade() {
