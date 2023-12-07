@@ -80,3 +80,21 @@ Check the results of the benchmark using:
 ```sh
 tail -f /var/log/tedge-benchmark/tedge-benchmark.log
 ```
+
+## About the benchmark script itself
+
+See the [cli documentation](docs/cli/benchmark.md) for a print out of the usage.
+
+The benchmark script is used to generate load on thin-edge.io by telemetry data on the thin-edge.io MQTT topic. The benchmark then checks to see if the telemetry data is mapped correctly to the Cumulocity outgoing topic to see if any messages are dropped.
+
+The telemetry data creation can be controlled in the following ways,
+
+* how many data points should be published in a burst (via `--beats <int>`)
+* how long to wait between publishing a single data point (via `--beats-delay <milliseconds>`)
+* how long to wait between bursts (from start of one burst to the start of another burst (via `--period <milliseconds>`)
+* how many data points are to be published in the entire test (across all bursts) (via `--count <int>`)
+* how many times to repeat all of the above (via `--iterations <int>`)
+
+The diagram aims at clarifying the terms listed above to better visualize which each of the parameters control:
+
+![tedge-benchmark.drawio.png](./docs/tedge-benchmark.drawio.png)
