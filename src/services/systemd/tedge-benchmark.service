@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 WorkingDirectory=/var/log/tedge-benchmark
-ExecStart=/usr/bin/tedge-benchmark.py run --count 1000 --beats 100 --period 500 --out-metric "tedge-benchmark.prom"
+ExecStart=/usr/bin/tedge-benchmark.py run --count 100 --beats 10 --period 500 --out-metric "tedge-benchmark.prom" --disable-protection
 StandardOutput=append:/var/log/tedge-benchmark/tedge-benchmark.log
 LogsDirectory=tedge-benchmark
 
