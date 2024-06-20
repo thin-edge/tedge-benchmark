@@ -569,6 +569,7 @@ def run_benchmark(opts):
         print(json.dumps(summary))
     return success
 
+
 def export_text_file_collector(summary: Dict[str, any], output_file: str):
     results = summary.get("results")
 
@@ -585,14 +586,15 @@ def export_text_file_collector(summary: Dict[str, any], output_file: str):
         # message per second
         metric = f'throughput_messages_per_second{{beats="{beats}",count="{count}",period="{period}"}} {item["messages_per_second"]}\n'
         file.write(metric)
-    
+
     file.flush()
     file.close()
     shutil.move(file.name, output_file)
     os.chmod(output_file, 0o644)
     LOG.info(f"Saved metrics to {output_file}")
 
-def configure():
+
+def configure(disable_protection: bool = False):
     """Configure the mosquitto bridge settings to ignore specific messages to
     protect against publishing large volumes of messages to the cloud
     """
@@ -601,6 +603,13 @@ def configure():
 
     if not bridge_config.exists():
         LOG.info("%s file does not exist. Ignoring", str(bridge_config))
+        return
+
+    if disable_protection:
+        LOG.info(
+            "bridge spam protection is disabled, so leaving %s file untouched",
+            str(bridge_config),
+        )
         return
 
     text = bridge_config.read_text("utf-8")
@@ -636,6 +645,13 @@ def register_subcommand(parser: argparse.ArgumentParser):
         "-v", "--verbose", action="store_true", help="Include verbose logging"
     )
     parser.add_argument("--debug", action="store_true", help="Include debug logging")
+    parser.add_argument(
+        "--disable-protection",
+        dest="disable_protection",
+        default=False,
+        action="store_true",
+        help="Disable the protection against publishing large number of measurements",
+    )
     return parser
 
 
@@ -691,15 +707,17 @@ Examples:
     elif getattr(opts, "verbose", False):
         set_loglevel(LOG, logging.INFO)
 
+    disable_protection = getattr(opts, "disable_protection", False)
+
     try:
         if not opts.command:
             parser.print_help()
             parser.exit(1)
 
         if opts.command == "configure":
-            configure()
+            configure(disable_protection)
         elif opts.command == "run":
-            configure()
+            configure(disable_protection)
             LOG.info("Running benchmark")
             success = run_benchmark(opts)
             LOG.info("Finished benchmark")
